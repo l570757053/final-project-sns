@@ -1,7 +1,10 @@
-{% extends "layout.html" %}
-
-{% block body %}
-
-
-
+{% extends "timeline.html" %}
+<!--展示用户主页-->
+{% block top %}
+<!--头部，有头像和关注按钮-->
+<div class="top">
+    <div class="photo">
+        <img src="/img/{{ user.profilePhoto }}" class="img-responsive img-circle">
+    </div>
+</div>
 {% endblock %}

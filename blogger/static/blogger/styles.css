@@ -2,6 +2,12 @@ body {
     padding: 10px;
 }
 
-.mid {
-    text-align: center;
+.photo{
+    height: 200px;
+    width: 200px;
+}
+
+.top{
+    height: 300px;
+    border-radius: 5px;
 }
