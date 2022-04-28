@@ -1,24 +1,30 @@
 {% extends "layout.html" %}
 
 {% block body %}
-
-    <h2>Login</h2>
-
     {% if message %}
         <div>{{ message }}</div>
     {% endif %}
 
-    <form action="{% url 'login' %}" method="post">
+    <form action="{% url 'login' %}" method="post" class="form-horizontal">
         {% csrf_token %}
         <div class="form-group">
-            <input autofocus class="form-control" type="text" name="username" placeholder="Username">
+            <label for="username" class="col-sm-2 control-label">用户名</label>
+            <div class="col-sm-8">
+                <input autofocus class="form-control" type="text" name="username" id="username" placeholder="Username">
+            </div>
         </div>
         <div class="form-group">
-            <input class="form-control" type="password" name="password" placeholder="Password">
+            <label for="username" class="col-sm-2 control-label">密码</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="password" name="password" id="password" placeholder="Password">
+            </div>
         </div>
-        <input class="btn btn-primary" type="submit" value="Login">
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <input class="btn btn-primary" type="submit" value="Login">
+                没有账号? <a href="{% url 'login' %}">点击这里注册。</a>
+            </div>
+        </div>
     </form>
-
-    Don't have an account? <a href="{% url 'register' %}">Register here.</a>
 
 {% endblock %}

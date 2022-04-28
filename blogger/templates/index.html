@@ -1,10 +1,9 @@
-{% extends "layout.html" %}
-
-{% block body %}
-    <div class="container">
-        <div class="row" >
+{% extends "timeline.html" %}
+<!--用来填充左右边栏和输入框-->
+{% block left %}
             <!--左侧边栏-->
-            <div class="col-lg-3 col-md-3" >
+            <div class="col-sm-3" >
+                {% if user.is_authenticated %}
                 <ul class="list-group">
                     <li class="list-group-item">
                         <a href="{% url 'index' %}">首页</a>
@@ -23,32 +22,61 @@
                         <a href="#">我的点赞</a>
                     </li>
                 </ul>
+                {% endif %}
             </div>
-            <!--中间主体-->
-            <div class="col-lg-6 col-md-6" >
-                <!--发新消息-->
+{% endblock %}
+
+{% block pub %}
+                <!--发布消息-->
+                {% if user.is_authenticated %}
                 <div>
-                    <form action="" method="post" role="search">
-                        <textarea class="form-control" placeholder="发布新消息吧！"></textarea>
-                        <input type="submit" class="btn btn-default" value="发布">
+                    <form action="/publish" method="post" role="search" id="f">
+                        {% csrf_token %}
+                        <textarea class="form-control" name="content" placeholder="发布新消息吧！"></textarea>
+                        <div>
+                            <span>
+                                <input type="file" class="btn btn-default" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg" name="picture" id="picture">
+                                <input type="hidden" id="h" name="h" value="n">
+                            </span>
+                            <span>
+                                <button class="btn btn-default" type="button" id="fan" onclick="fun1()">粉丝可见</button>
+                            </span>
+                            <span>
+                                <button class="btn btn-default" type="button" id="sub" onclick="fun2()">发布博文</button>
+                            </span>
+                        </div>
                     </form>
                 </div>
-                这是时间线
-                <!--这是博文格式-->
-                <div class="media">
-                    <div class="media-left image item" alt="头像">
-                        <img src="" class="img-responsive">这是头像
-                    </div>
-                    <div class="media-body">
-                        <h5 class="media-heading">
-                            <a href="#">用户名</a>
-                        </h5>
-                        <p class="content">博文内容</p>
-                    </div>
-                </div>
-            </div>
+                {% endif %}
+
+                <script>
+                    function fun1(){
+                        var h=document.getElementById("h");
+                        var b=document.getElementById("fan");
+                        if(h.value=="y"){
+                            b.className="btn btn-default"
+                            h.value="n"
+                        }
+                        else{
+                            b.className="btn btn-success"
+                            h.value="y"
+                        }
+                    }
+                    function fun2(){
+                        var f=document.getElementById("f");
+                        var h=document.getElementById("h");
+                        var b=document.getElementById("fan");
+                        b.className="btn btn-default"
+                        h.value="n"
+                        f.submit()
+                    }
+                </script>
+{% endblock %}
+
+{% block right %}
             <!--右侧边栏-->
-            <div class="col-lg-3 col-md-3" >
+            <div class="col-sm-3" >
+                {% if user.is_authenticated %}
                 <ul class="list-group">
                     <li class="list-group-item">
                         <a href="#">我的关注</a>
@@ -63,8 +91,6 @@
                         <a href="#">用户设置</a>
                     </li>
                 </ul>
+                {% endif %}
             </div>
-        </div>
-    </div>
-
 {% endblock %}

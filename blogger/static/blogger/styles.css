@@ -1,7 +1,44 @@
 body {
+    margin-top: 50px;
     padding: 10px;
 }
 
-.mid {
+.photo {
+    height: 200px;
+    width: 200px;
+    margin: 0 auto;
+}
+
+.top {
+    height: 350px;
+    border-radius: 5px;
+    width: 100%;
+    padding-top: 20px;
+    margin-bottom: 20px;
+}
+
+.fol {
     text-align: center;
+}
+.fol-sub {
+    display: inline-block；
+}
+
+#btns {
+    width: 100%
+}
+
+#btns>li {
+    width: 25%;
+    text-align: center;
+}
+
+#timeline {
+    margin-top: 10px;
+}
+
+#change_inf {
+    display: none;
+    width: 50%;
+    margin: 0 auto;
 }

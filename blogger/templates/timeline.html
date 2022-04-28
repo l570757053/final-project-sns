@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+<!--用来表示中间部分的时间线-->
+{% block body %}
+    {% block top %}
+    {% endblock %}
+    <div class="container">
+        <div class="row" >
+            {% block left %}
+            {% endblock %}
+            <!--中间主体-->
+            <div class="col-sm-6 {{ c_style }}" >
+                {% block pub %}
+                {% endblock %}
+                <!--这是博文格式-->
+                {% for msg in msgs %}
+                <div class="media row" id="timeline">
+                    <div class="media-left col-sm-2" alt="头像">
+                         <a href="/user/{{ msg.user }}"><img src="/img/{{ msg.user.profilePhoto }}" class="img-responsive img-circle"></a>
+                    </div>
+                    <div class="media-body">
+                        <h5 class="media-heading">
+                            <a href="/user/{{ msg.user }}">{{ msg.user }}</a>
+                        </h5>
+                        <p class="content">{{ msg.content }}</p>
+                        <img src="/img/{{ msg.pic }}" class="img-responsive">
+                    </div>
+                    {% if user.is_authenticated %}
+                    <div>
+                        <ul class="nav navbar-nav" id="btns">
+                            <li><a href="#">转发</a></li>
+                            <li><a href="#">评论</a></li>
+                            <li><a href="#">点赞</a></li>
+                            <li><a href="#">收藏</a></li>
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+            {% block right %}
+            {% endblock %}
+        </div>
+    </div>
+{% endblock %}

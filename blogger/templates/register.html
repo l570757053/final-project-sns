@@ -2,29 +2,48 @@
 
 {% block body %}
 
-    <h2>Register</h2>
-
     {% if message %}
         <div>{{ message }}</div>
     {% endif %}
 
-    <form action="{% url 'register' %}" method="post">
+    <form action="{% url 'register' %}" method="post" enctype="multipart/form-data" class="form-horizontal" role="form">
         {% csrf_token %}
         <div class="form-group">
-            <input class="form-control" autofocus type="text" name="username" placeholder="Username">
+            <label for="username" class="col-sm-2 control-label">用户名</label>
+            <div class="col-sm-8">
+                <input class="form-control" autofocus type="text" name="username" id="username" placeholder="Username">
+            </div>
         </div>
         <div class="form-group">
-            <input class="form-control" type="email" name="email" placeholder="Email Address">
+            <label for="username" class="col-sm-2 control-label">头像</label>
+            <div class="col-sm-8">
+                <input type="file"  accept="image/gif,image/jpeg,image/jpg,image/png,image/svg" name="picture" id="picture">
+            </div>
         </div>
         <div class="form-group">
-            <input class="form-control" type="password" name="password" placeholder="Password">
+            <label for="username" class="col-sm-2 control-label">邮箱</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="email" name="email" id="email" placeholder="Email Address">
+            </div>
         </div>
         <div class="form-group">
-            <input class="form-control" type="password" name="confirmation" placeholder="Confirm Password">
+            <label for="username" class="col-sm-2 control-label">密码</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="password" name="password" id="password" placeholder="Password">
+            </div>
         </div>
-        <input class="btn btn-primary" type="submit" value="Register">
+        <div class="form-group">
+            <label for="username" class="col-sm-2 control-label">重复密码</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="password" name="confirmation" id="confirmation" placeholder="Confirm Password">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <input class="btn btn-primary" type="submit" value="Register">
+                已有账号? <a href="{% url 'login' %}">点击这里登录。</a>
+            </div>
+        </div>
     </form>
-
-    Already have an account? <a href="{% url 'login' %}">Log In here.</a>
 
 {% endblock %}
