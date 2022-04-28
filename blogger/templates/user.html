@@ -6,5 +6,50 @@
     <div class="photo">
         <img src="/img/{{ user.profilePhoto }}" class="img-responsive img-circle">
     </div>
+    <div class="fol">
+        <div class="fol-sub">
+            <h3>{{ user.username }}</h3>
+        </div>
+        <form action="/user/{{ user.username }}" method="POST" id="top-f">
+            {% csrf_token %}
+            <p id="inf">{{ user.introduction }}</p>
+            <input class="form-control" type="text" name="change_inf" id="change_inf">
+            <input type="hidden" name="h" id="top-h" value="fol">
+            {% if flag %}<!--真则不是自己的主页-->
+            <div class="fol-sub">
+                <button class="{{ btn_class }}" type="button" id="fol" onclick="fun3()">关注</button>
+            </div>
+            {% else %}
+            <div class="fol-sub">
+                <button class="btn btn-default" type="button" id="cha" onclick="fun4()">修改签名</button>
+            </div>
+            {% endif %}
+        </form>
+        <script>
+            function fun3(){
+                var h=document.getElementById("top-h");
+                h.value="fol"
+                fun5()
+            }
+            function fun4(){
+                var h=document.getElementById("top-h");
+                var t=document.getElementById("change_inf");
+                var inf=document.getElementById("inf");
+                if(h.value=="fol"){
+                    h.value="cha";
+                    t.style.display="block";
+                    inf.style.display="none";
+                }
+                else{
+                    fun5()
+                }
+            }
+            function fun5(){
+                var f=document.getElementById("top-f");
+                f.submit()
+            }
+        </script>
+    </div>
+
 </div>
 {% endblock %}
