@@ -20,7 +20,7 @@ class Message(models.Model):
 
 class Comment(models.Model):
     ID = models.BigAutoField(primary_key=True, editable=False)
-    message_id = models.ForeignKey(Message, on_delete=models.CASCADE, to_field='ID', verbose_name="messageID")
+    message_id = models.ForeignKey(Message, on_delete=models.CASCADE, to_field='ID', verbose_name="messageID",related_name='cm')
     time = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, to_field='username', verbose_name="username")
     content = models.CharField(max_length=140)
@@ -35,14 +35,14 @@ class Cikes(models.Model):
 
 class Mlikes(models.Model):
     ID = models.BigAutoField(primary_key=True, editable=False)
-    message_id = models.ForeignKey(Message, on_delete=models.CASCADE, to_field='ID', verbose_name="messageID")
+    message_id = models.ForeignKey(Message, on_delete=models.CASCADE, to_field='ID', verbose_name="messageID",related_name='ml')
     user = models.ForeignKey(User, on_delete=models.CASCADE, to_field='username', verbose_name="username")
     time = models.DateTimeField(auto_now_add=True)
 
 
 class Collect(models.Model):
     ID = models.BigAutoField(primary_key=True, editable=False)
-    message_id = models.ForeignKey(Message, on_delete=models.CASCADE, to_field='ID', verbose_name="messageID")
+    message_id = models.ForeignKey(Message, on_delete=models.CASCADE, to_field='ID', verbose_name="messageID",related_name='cl')
     user = models.ForeignKey(User, on_delete=models.CASCADE, to_field='username', verbose_name="username")
     time = models.DateTimeField(auto_now_add=True)
 
@@ -66,8 +66,9 @@ class Background(models.Model):
 
 class Notice(models.Model):
     ID = models.BigAutoField(primary_key=True, editable=False)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, to_field='username', verbose_name="username")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, to_field='username', verbose_name="username",related_name='nt')
     likes = models.IntegerField(default='0')
     relays = models.IntegerField(default='0')
     comments = models.IntegerField(default='0')
     fans = models.IntegerField(default='0')
+

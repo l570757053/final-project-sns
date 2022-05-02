@@ -7,4 +7,5 @@ admin.site.register(models.User)
 admin.site.register(models.Message)
 admin.site.register(models.Background)
 admin.site.register(models.Notice)
+admin.site.register(models.Comment)
 
