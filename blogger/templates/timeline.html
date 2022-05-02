@@ -27,13 +27,24 @@
                     {% if user.is_authenticated %}
                     <div>
                         <ul class="nav navbar-nav" id="btns">
-                            <li><a href="#">转发</a></li>
-                            <li><a href="#">评论</a></li>
-                            <li><a href="#">点赞</a></li>
-                            <li><a href="#">收藏</a></li>
+                            <li><a data-toggle="collapse" data-target="#demo">转发</a></li>
+                            <li><a href="{% url 'bloginf' msg.ID%}">{{ msg.cm.all.count }} 评论</a></li>
+                            <li><a href="{% url 'mlike' msg.ID%}">{{ msg.ml.all.count }} 点赞</a></li>
+                            <li><a href="{% url 'collect' msg.ID%}">收藏</a></li>
+
                         </ul>
                     </div>
+                    <div id="demo" class="collapse">
+                        <form action="{% url 'relay' msg.ID%}" method="post" role="search">
+                            {% csrf_token %}
+                            <textarea class="form-control" name="content" placeholder="请输入你的转发内容"></textarea>
+                            <div>
+                                <input class="btn btn-default" type="submit" value="转发">
+                            </div>
+                        </form>
+                    </div>
                     {% endif %}
+
                 </div>
                 {% endfor %}
             </div>
