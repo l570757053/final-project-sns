@@ -10,16 +10,16 @@
                     </li>
                     <li class="list-group-item">
                         <span class="badge">new</span><!--这个是新消息提示-->
-                        <a href="#">通知</a>
+                        <a href="{% url 'notice' %}">通知</a>
                     </li>
                     <li class="list-group-item">
-                        <a href="#">我的收藏</a>
+                        <a href="{% url 'listcollect' %}">我的收藏</a>
                     </li>
                     <li class="list-group-item">
-                        <a href="#">我的评论</a>
+                        <a href="{% url 'listcomment' %}">我的评论</a>
                     </li>
                     <li class="list-group-item">
-                        <a href="#">我的点赞</a>
+                        <a href="{% url 'listlike' %}">我的点赞</a>
                     </li>
                 </ul>
                 {% endif %}
@@ -70,7 +70,7 @@
                         
                 </div>
                 {% endfor %}
-                <!--{% for clike in clikes %}
+                {% for clike in clikes %}
                 <div class="media row" id="timeline">
                     <div class="media-left col-sm-2" alt="头像">
                          <a href="/user/{{ clike.comment_id.user }}"><img src="/img/{{ clike.comment_id.user.profilePhoto }}" class="img-responsive img-circle"></a>
@@ -84,8 +84,62 @@
                     </div>
                         
                 </div>
-                {% endfor %}-->
+                {% endfor %}
                 
+                {% for com in coms %}
+                <div class="media row" id="timeline">
+                    <div class="media-left col-sm-2" alt="头像">
+                         <a href="/user/{{ com.message_id.user }}"><img src="/img/{{ com.message_id.profilePhoto }}" class="img-responsive img-circle"></a>
+                    </div>
+                    <div class="media-body">
+                        <h5 class="media-heading">
+                            <a href="/user/{{ com.message_id.user }}">{{ com.message_id.user }}</a>
+                        </h5>
+                        <p class="content">{{ com.message_id.content }}</p>
+                        <img src="/img/{{ com.message_id.pic }}" class="img-responsive">
+                    </div>
+                    <div>
+                        <ul class="nav navbar-nav" id="btns">
+                            <li><a data-toggle="collapse" data-target="#demo">转发</a></li>
+                            <li><a href="{% url 'bloginf' com.message_id.ID%}">{{ com.message_id.cm.all.count }} 评论</a></li>
+                            <li><a href="{% url 'mlike' com.message_id.ID%}">{{ com.message_id.ml.all.count }} 点赞</a></li>
+                            <li><a href="{% url 'collect' com.message_id.ID%}">收藏</a></li>
+                            <li></li>
+                        </ul>
+                    </div>                  
+                    <div id="demo" class="collapse">
+                        <form action="{% url 'relay' com.message_id.ID%}" method="post" role="search">
+                            {% csrf_token %}
+                            <textarea class="form-control" name="content" placeholder="请输入你的转发内容"></textarea>
+                            <div>
+                                <input class="btn btn-default" type="submit" value="转发">
+                            </div>
+                        </form>
+                    </div>
+                    <table class="table table-bordered"width="100%" rules=none>
+                        <thead>
+                            <th>   
+                                <div class="media-left col-sm-2" alt="头像">
+                                    <a href="/user/{{ com.user }}"><img src="/img/{{ com.user.profilePhoto }}" class="img-responsive img-circle"></a>
+                                </div> 
+                                <h5 class="media-heading">
+                                    <a href="/user/{{ com.user }}">{{ com.user }}</a>
+                                </h5>
+                            </th>
+                        </thead>
+                        <tbody>
+                            <tr><td><p class="content">{{ com.content }}</p></td></tr>
+                            <tr>
+                                <td><a href="{% url 'clike' com.ID%}">{{ com.cl.all.count }} 点赞</a><h6 class="text-right">{{ com.time }}</h6></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                        
+                        
+                </div>
+
+                {% endfor %}
             </div>
         </div>
     </div>
@@ -96,16 +150,16 @@
                 {% if user.is_authenticated %}
                 <ul class="list-group">
                     <li class="list-group-item">
-                        <a href="#">我的关注</a>
+                        <a href="{% url 'listfollow' %}">我的关注</a>
                     </li>
                     <li class="list-group-item">
-                        <a href="#">我的粉丝</a>
+                        <a href="{% url 'listfan' %}">我的粉丝</a>
                     </li>
                     <li class="list-group-item">
-                        <a href="#">背景设置</a>
+                        <a href="{% url 'back' %}">背景设置</a>
                     </li>
                     <li class="list-group-item">
-                        <a href="#">用户设置</a>
+                        <a href="{% url 'cu' %}">用户设置</a>
                     </li>
                 </ul>
                 {% endif %}

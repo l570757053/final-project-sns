@@ -18,9 +18,10 @@
                     <a class="navbar-brand" href="{% url 'index' %}">首页</a>
                 </div>
                 <div class="col-sm-5">
-                    <form class="navbar-form" action="" method="post" role="search">
+                    <form class="navbar-form" action="{% url 'search' %}" method="post" role="search">
+                        {% csrf_token %}  
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="请输入搜索内容...">
+                            <input type="text" class="form-control" placeholder="请输入搜索内容..." name="text">
                         </div>
                         <input type="submit" class="btn btn-default" value="搜索">
                     </form>
