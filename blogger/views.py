@@ -8,22 +8,27 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.db.models import Q
 from . import models
-from .models import User,Message,Cikes,Mlikes,Comment,Collect
+from .models import Background, Follow, Notice, User,Message,Cikes,Mlikes,Comment,Collect
 
 
 def index(request):
     if request.user.is_authenticated:
         f = models.Follow.objects.filter(fans=request.user).values_list('following', flat=True)
         
-        msgs = models.Message.objects.select_related('user').filter(Q(user__in=f) | Q(user=request.user))
+        #msgs = models.Message.objects.select_related('user').filter(Q(user__in=f) | Q(user=request.user))
+        msgs = models.Message.objects.select_related('user').filter(show=True)
+        a=Background.objects.get(user=request.user)
+
         return render(request, "index.html", {
-            'msgs': msgs
+            'msgs': msgs,
+            "a":a
         })
     else:
         msgs = models.Message.objects.select_related('user').filter(show=True)
         return render(request, "index.html", {
             'msgs': msgs
         })
+
 
 
 def login_view(request):
@@ -68,7 +73,7 @@ def register(request):
         # Attempt to create new user
         try:
             user = User.objects.create_user(username, email, password)
-            user.ProfilePhoto = picture
+            user.profilePhoto = picture
             notice = models.Notice(user=user)
             background = models.Background(user=user)
             user.save()
@@ -127,12 +132,20 @@ def clike(request,id):
     m=Comment.objects.get(ID=id)
     user=request.user
     if Cikes.objects.filter(comment_id=m,user=user):
-        a=Cikes.objects.delete(comment_id=m,user=user)
-        a.save()
+        a=Cikes.objects.get(comment_id=m,user=user)
+        a.delete()
         return HttpResponseRedirect(reverse("index"))
     else:
         c=Cikes.objects.create(comment_id=m,user=user)
         c.save()
+        if Notice.objects.filter(user=m.user):
+            notice=Notice.objects.get(user=m.user)
+            notice.likes=notice.likes+1
+            notice.save()
+        else:
+            notice=Notice.objects.create(user=m.user)
+            notice.likes=notice.likes+1
+            notice.save()
         return HttpResponseRedirect(reverse("index"))
 
 
@@ -142,6 +155,14 @@ def createcomment(request,id):
     comment=request.POST["content"]
     c=Comment.objects.create(message_id=m,user=user,content=comment)
     c.save()
+    if Notice.objects.filter(user=m.user):
+        notice=Notice.objects.get(user=m.user)
+        notice.comments=notice.comment+1
+        notice.save()
+    else:
+        notice=Notice.objects.create(user=m.user)
+        notice.comments=notice.comment+1
+        notice.save()
     return HttpResponseRedirect("/bloginf/"+id)
 
 
@@ -156,6 +177,14 @@ def mlike(request,id):
     else:
         c=Mlikes.objects.create(message_id=m,user=user)
         c.save()
+        if Notice.objects.filter(user=m.user):
+            notice=Notice.objects.get(user=m.user)
+            notice.likes=notice.likes+1
+            notice.save()
+        else:
+            notice=Notice.objects.create(user=m.user)
+            notice.likes=notice.likes+1
+            notice.save()
         return HttpResponseRedirect(reverse("index"))
 
 
@@ -178,14 +207,22 @@ def relay(request,id):
     content=content+"//@"+m.user.username+":"+m.content
     user=request.user
     r=Message.objects.create(user=user,content=content,o_ID=id)
+    if Notice.objects.filter(user=m.user):
+        notice=Notice.objects.get(user=m.user)
+        notice.relays=notice.relays+1
+        notice.save()
+    else:
+        notice=Notice.objects.create(user=m.user)
+        notice.relays=notice.relays+1
+        notice.save()
     r.save()
     return HttpResponseRedirect(reverse("index"))
 
 
 def bloginf(request,id):
     f = models.Follow.objects.filter(fans=request.user).values_list('following', flat=True)
-    msgs = models.Message.objects.select_related('user').filter(Q(user__in=f) | Q(user=request.user)).get(ID=id)
-    cms=models.Comment.objects.select_related('user').filter(Q(user__in=f) | Q(user=request.user)).filter(message_id=id)
+    msgs = models.Message.objects.select_related('user').get(ID=id)
+    cms=models.Comment.objects.select_related('user').filter(message_id=id)
     return render(request,"bloginf.html",{"msg":msgs,"cms":cms})
 
 
@@ -201,15 +238,22 @@ def mlike1(request,id):
     else:
         c=Mlikes.objects.create(message_id=m,user=user)
         c.save()
+        if Notice.objects.filter(user=m.user):
+            notice=Notice.objects.get(user=m.user)
+            notice.likes=notice.likes+1
+            notice.save()
+        else:
+            notice=Notice.objects.create(user=m.user)
+            notice.likes=notice.likes+1
+            notice.save()
         return HttpResponseRedirect("/bloginf/"+id)
 
 
 def listlike(request):
     user=request.user
     mlike=Mlikes.objects.filter(user=user).select_related('message_id')
-    #clike=Cikes.objects.filter(user=user).select_related('comment_id')
-    #return render(request,"listl.html",{"mlikes":mlike,"clikes":clike})
-    return render(request,"listl.html",{"mlikes":mlike})
+    clike=Cikes.objects.filter(user=user).select_related('comment_id')
+    return render(request,"listl.html",{"mlikes":mlike,"clikes":clike})
 
 def listcollect(request):
     user=request.user
@@ -219,5 +263,88 @@ def listcollect(request):
 def listcomment(request):
     user=request.user
     comments=Comment.objects.filter(user=user).select_related('message_id')
-    return render(request,"listcm.html",{"comments",comments})
+    return render(request,"listl.html",{"coms":comments})
 
+def changeinf(request):
+    user=request.user
+    inf=request.POST["change_inf"]
+    user.introduction=inf
+    user.save()
+    return HttpResponseRedirect("/user/"+user.username)
+
+def follow(request,id):
+    f=User.objects.get(username=id)
+    fan=request.user
+    fa=Follow.objects.create(following=f,fans=fan)
+    fa.save()
+    if Notice.objects.filter(user=f):
+        notice=Notice.objects.get(user=f)
+        notice.fans=notice.fans+1
+        notice.save()
+    else:
+        notice=Notice.objects.create(user=f)
+        notice.fans=notice.fans+1
+        notice.save()
+    return HttpResponseRedirect("/user/"+f.username)
+
+def listfollow(request):
+    user=request.user
+    f=Follow.objects.filter(fans=user)
+    return render(request,"listfollow.html",{"fs":f,"content":"关注"})
+
+def listfan(request):
+    user=request.user
+    f=Follow.objects.filter(following=user)
+    return render(request,"listfollow.html",{"fs":f,"content":"粉丝"})
+
+def changeuser(request):
+    user=request.user
+    email = request.POST["email"]
+    pic = request.FILES.get("pic")
+    user.email=email
+    user.profilePhoto=pic
+    user.save()
+    return HttpResponseRedirect("cu")
+
+def cu(request):
+    user=request.user
+    return render(request,"changeuser.html",{"user":user})
+
+def notice(request):
+    user=request.user
+    n=Notice.objects.get(user=user)
+    likes = n.likes
+    relays = n.relays
+    comments = n.comments
+    fans=n.fans
+    n.likes = 0
+    n.relays =0
+    n.comments = 0
+    n.fans=0
+    n.save()
+    return render(request,"notice.html",{"likes":likes,"relays":relays,"comments":comments,"fans":fans})
+
+
+def search(request):
+    text=request.POST["text"]
+    ms=Message.objects.all()
+    m=[i for i in ms if text in i.content]
+    us=User.objects.all()
+    u=[i for i in us if text in i.username]
+    return render(request,"result.html",{"ms":m,"us":u})
+
+def back(request):
+    user=request.user
+    if Background.objects.filter(user=user):
+        a=Background.objects.get(user=user)
+    else:
+        a=Background.objects.create(user=user)    
+    return render(request,"changeback.html",{"a":a})
+
+def color(request):
+    c=request.POST['color']
+    user=request.user
+    a=Background.objects.get(user=user)
+    a.Font_color=c
+    a.save()
+    return HttpResponseRedirect("back")

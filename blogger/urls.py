@@ -20,6 +20,22 @@ urlpatterns = [
     path("listlike", views.listlike, name="listlike"),
     path("listcollect", views.listcollect, name="listcollect"),
     path("listcomment", views.listcomment, name="listcomment"),
+    path("changeinf", views.changeinf, name="changeinf"),
+    path("follow/<str:id>", views.follow, name="follow"),
+    path("listfollow", views.listfollow, name="listfollow"),
+    path("listfan", views.listfan, name="listfan"),
+    path("cu", views.cu, name="cu"),
+    path("changeuser", views.changeuser, name="changeuser"),
+    path("notice", views.notice, name="notice"),
+    path("search", views.search, name="search"),
+    path("back", views.back, name="back"),
+    path("color", views.color, name="color"),
+
+
+
+
+
+
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
