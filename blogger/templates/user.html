@@ -1,5 +1,6 @@
 {% extends "timeline.html" %}
 <!--展示用户主页-->
+
 {% block top %}
 <!--头部，有头像和关注按钮-->
 <div class="top">
@@ -8,16 +9,16 @@
     </div>
     <div class="fol">
         <div class="fol-sub">
-            <h3>{{ user.username }}</h3>
+            <h3 style="color:{{ bg.font_color }}">{{ user.username }}</h3>
         </div>
-        <form action="{% url 'changeinf' %}" method="POST" id="top-f">
+        <form action="/user/{{ user.username }}" method="POST" id="top-f">
             {% csrf_token %}
             <p id="inf">{{ user.introduction }}</p>
             <input class="form-control" type="text" name="change_inf" id="change_inf">
             <input type="hidden" name="h" id="top-h" value="fol">
             {% if flag %}<!--真则不是自己的主页-->
             <div class="fol-sub">
-                <a href="{% url 'follow' user.username%}"><button class="{{ btn_class }}" type="button" id="fol" onclick="fun3()">关注</button></a>
+                <button class="{{ btn_class }}" type="button" id="fol" onclick="fun3()">关注</button></a>
             </div>
             {% else %}
             <div class="fol-sub">
@@ -50,6 +51,13 @@
             }
         </script>
     </div>
-
 </div>
 {% endblock %}
+
+{% block leftbar %}
+<div class="col-sm-3" ></div>
+{% endblock %}
+{% block rightbar %}
+<div class="col-sm-3" ></div>
+{% endblock %}
+

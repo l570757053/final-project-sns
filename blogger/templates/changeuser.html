@@ -1,83 +1,39 @@
-{% extends "index.html" %}
+{% extends "timeline.html" %}
 <!--用来表示中间部分的时间线-->
-{% block left %}
-            <!--左侧边栏-->
-            <div class="col-sm-3" >
-                {% if user.is_authenticated %}
-                <ul class="list-group">
-                    <li class="list-group-item">
-                        <a href="{% url 'index' %}">首页</a>
-                    </li>
-                    <li class="list-group-item">
-                        <span class="badge">new</span><!--这个是新消息提示-->
-                        <a href="{% url 'notice' %}">通知</a>
-                    </li>
-                    <li class="list-group-item">
-                        <a href="{% url 'listcollect' %}">我的收藏</a>
-                    </li>
-                    <li class="list-group-item">
-                        <a href="{% url 'listcomment' %}">我的评论</a>
-                    </li>
-                    <li class="list-group-item">
-                        <a href="{% url 'listlike' %}">我的点赞</a>
-                    </li>
-                </ul>
-                {% endif %}
-            </div>
+{% block leftbar %}
+    {% include "leftbar.html" %}
 {% endblock %}
+
 {% block pub %}
 <div>
     <div>
-        <form action="{% url 'changeuser'%}" method="post" role="search" id="f" enctype="multipart/form-data" role="form">
+        <div class="photo">
+            <img alt="头像" src="/img/{{ user.profilePhoto }}" class="img-responsive img-circle">
+        </div>
+        <form action="{% url 'changeuser'%}" method="post" role="search" id="f" enctype="multipart/form-data" role="form" class="form-horizontal">
             {% csrf_token %}
-            <div>
-                <div>
-                    <label for="username" class="col-sm-2 control-label">修改头像</label>
-                    <div class="col-sm-5" alt="头像">
-                        <img src="/img/{{ user.profilePhoto }}" class="img-responsive img-circle">
-                    </div>
-                    <span>
-                        <input type="file" class="btn btn-default" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg" name="pic" id="pic" value="/img/{{ user.profilePhoto }}">
-                    </span>
+            <div class="form-group">
+                <label for="pic" class="col-sm-4 control-label">修改头像</label>
+                <div class="col-sm-8">
+                    <input type="file" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg" name="pic" id="pic" value="/img/{{ user.profilePhoto }}">
                 </div>
-                <div>
-                    <label for="username" class="col-sm-2 control-label">修改邮箱</label>
-                    <input type="text" name="email" value="{{ user.email }}">
+            </div>
+            <div class="form-group">
+                <label for="email" class="col-sm-4 control-label">修改邮箱</label>
+                <div class="col-sm-8">
+                    <input autofocus class="form-control" type="text" name="email" id="email" value="{{ user.email }}" placeholder="Email">
                 </div>
-
-                <input type="submit" value="修改">
-
             </div>
         </form>
     </div>
-    
 
    <h5 class="media-heading">
        <a href="/user/{{ msg.user }}">{{ msg.user }}</a>
    </h5>
 
 </div>
-
-    
 {% endblock %}
-{% block right %}
-            <!--右侧边栏-->
-            <div class="col-sm-3" >
-                {% if user.is_authenticated %}
-                <ul class="list-group">
-                    <li class="list-group-item">
-                        <a href="{% url 'listfollow' %}">我的关注</a>
-                    </li>
-                    <li class="list-group-item">
-                        <a href="{% url 'listfan' %}">我的粉丝</a>
-                    </li>
-                    <li class="list-group-item">
-                        <a href="{% url 'back' %}">背景设置</a>
-                    </li>
-                    <li class="list-group-item">
-                        <a href="{% url 'cu' %}">用户设置</a>
-                    </li>
-                </ul>
-                {% endif %}
-            </div>
+
+{% block rightbar %}
+{% include "rightbar.html" %}
 {% endblock %}

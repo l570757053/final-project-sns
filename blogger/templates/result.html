@@ -1,109 +1,44 @@
 {% extends "timeline.html" %}
 <!--用来填充左右边栏和输入框-->
-{% block left %}
-            <!--左侧边栏-->
-            <div class="col-sm-3" >
-                {% if user.is_authenticated %}
-                <ul class="list-group">
-                    <li class="list-group-item">
-                        <a href="{% url 'index' %}">首页</a>
-                    </li>
-                    <li class="list-group-item">
-                        <span class="badge">new</span><!--这个是新消息提示-->
-                        <a href="{% url 'notice' %}">通知</a>
-                    </li>
-                    <li class="list-group-item">
-                        <a href="{% url 'listcollect' %}">我的收藏</a>
-                    </li>
-                    <li class="list-group-item">
-                        <a href="{% url 'listcomment' %}">我的评论</a>
-                    </li>
-                    <li class="list-group-item">
-                        <a href="{% url 'listlike' %}">我的点赞</a>
-                    </li>
-                </ul>
-                {% endif %}
-            </div>
+{% block leftbar %}
+    {% include "leftbar.html" %}
 {% endblock %}
+
 {% block pub %}
-<a data-toggle="collapse" data-target="#user">用户</a>
-<div id="user" class="collapse">
-   {% for u in us %} 
-    <div class="media-left col-sm-2" alt="头像">
-        <a href="/user/{{ u.username }}"><img src="/img/{{ u.profilePhoto }}" class="img-responsive img-circle"></a>
+<div class="btns">
+    <button class="btn btn-default" type="button" onclick="show_blog()">博文</button>
+    <button class="btn btn-default" type="button" onclick="show_user()">用户</button>
+</div>
+<div id="user" class="search-user" style="display:none;">
+   {% for u in us %}
+    <div class="media row bdc">
+        <div class="media-left col-sm-2">
+            <a href="/user/{{ u.username }}"><img alt="头像" src="/img/{{ u.profilePhoto }}" class="img-responsive img-circle"></a>
+        </div>
+        <h4 class="media-heading">
+            <a href="/user/{{ u.username }}">{{ u.username }}</a>
+        </h4>
+        <p class="msg-content">{{ u.introduction }}</p>
     </div>
-    <h5 class="media-heading">
-        <a href="/user/{{ u.username }}">{{ u.username }}</a>
-    </h5>
    {% endfor %}
 </div>
 
-
-<a data-toggle="collapse" data-target="#blog">博文</a>
-<div id="blog" class="collapse">
-    {% for m in ms %} 
-    <div class="media row" id="timeline">
-        <div class="media-left col-sm-2" alt="头像">
-             <a href="/user/{{ m.user }}"><img src="/img/{{ m.user.profilePhoto }}" class="img-responsive img-circle"></a>
-        </div>
-        <div class="media-body">
-            <h5 class="media-heading">
-                <a href="/user/{{ m.user }}">{{ m.user }}</a>
-            </h5>
-            <p class="content">{{ m.content }}</p>
-            <img src="/img/{{ m.pic }}" class="img-responsive">
-        </div>
-        {% if user.is_authenticated %}
-        <div>
-            <ul class="nav navbar-nav" id="btns">
-                <li><a data-toggle="collapse" data-target="#demo">转发</a></li>
-                <li><a href="{% url 'bloginf' m.ID%}">{{ m.cm.all.count }} 评论</a></li>
-                <li><a href="{% url 'mlike' m.ID%}">{{ m.ml.all.count }} 点赞</a></li>
-                <li><a href="{% url 'collect' m.ID%}">收藏</a></li>
-
-            </ul>
-        </div>
-        <div id="demo" class="collapse">
-            <form action="{% url 'relay' m.ID%}" method="post" role="search">
-                {% csrf_token %}
-                <textarea class="form-control" name="content" placeholder="请输入你的转发内容"></textarea>
-                <div>
-                    <input class="btn btn-default" type="submit" value="转发">
-                </div>
-            </form>
-        </div>
-        {% endif %}
-
-    </div>
-
-
-    {% endfor %}
-
-
-
-</div>
-
-
+<script>
+    function show_blog(){
+        s1=document.getElementById("blog");
+        s2=document.getElementById("user");
+        s1.style.display="block";
+        s2.style.display="none";
+    }
+    function show_user(){
+        s1=document.getElementById("blog");
+        s2=document.getElementById("user");
+        s1.style.display="none";
+        s2.style.display="block";
+    }
+</script>
 {% endblock %}
 
-{% block right %}
-            <!--右侧边栏-->
-            <div class="col-sm-3" >
-                {% if user.is_authenticated %}
-                <ul class="list-group">
-                    <li class="list-group-item">
-                        <a href="{% url 'listfollow' %}">我的关注</a>
-                    </li>
-                    <li class="list-group-item">
-                        <a href="{% url 'listfan' %}">我的粉丝</a>
-                    </li>
-                    <li class="list-group-item">
-                        <a href="{% url 'back' %}">背景设置</a>
-                    </li>
-                    <li class="list-group-item">
-                        <a href="{% url 'cu' %}">用户设置</a>
-                    </li>
-                </ul>
-                {% endif %}
-            </div>
+{% block rightbar %}
+{% include "rightbar.html" %}
 {% endblock %}

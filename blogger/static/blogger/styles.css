@@ -20,25 +20,168 @@ body {
 .fol {
     text-align: center;
 }
+
 .fol-sub {
     display: inline-block；
 }
 
-#btns {
-    width: 100%
-}
-
-#btns>li {
-    width: 25%;
-    text-align: center;
-}
-
-#timeline {
-    margin-top: 10px;
+#timeline, #mlikes, #coms {
+    padding-top: 10px;
 }
 
 #change_inf {
     display: none;
     width: 50%;
     margin: 0 auto;
+}
+
+#cc {
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    display: none;
+    position: absolute;
+    bottom: 0;
+    z-index: 997;
+    width: 100%;
+    height: auto;
+    background-color: white;
+}
+
+#x {
+    background: url(data:image/gif;base64,R0lGODlhFQAVAPAAAAAAAAAAACH5BAEAAAEALAAAAAAVABUAAAIsjI+py+0PH2Czgatupfho+AUhqHWROJ7laZSm1KXchtLZ2+KJ7bH+DwwKFQUAOw==) no-repeat;
+    cursor: pointer;
+    display: inline-block;
+    height: 16px;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    width: 16px;
+    z-index: 998;
+}
+
+.list-group-horizontal {
+    width: 100%;
+}
+
+.list-group-horizontal .list-group-item {
+	margin-bottom: 0;
+	margin-left:-4px;
+	margin-right: -4px;
+	width: 25%;
+	display: inline-block;
+}
+
+.list-group-horizontal .list-group-item:first-child {
+	border-top-right-radius:0;
+	border-bottom-left-radius:4px;
+}
+
+.list-group-horizontal .list-group-item:last-child {
+	border-top-right-radius:4px;
+	border-bottom-left-radius:0;
+}
+
+#x_f {
+    height: auto;
+    display: block;
+    margin: 20px;
+    font-size: 16px;
+    font-weight: bold;
+    vertical-align: baseline;
+}
+
+#outer {
+    display:none;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background:rgba(0,0,0,.5);
+    z-index: 990;
+}
+
+.media-body img{
+    padding: 20px 20px 20px 0;
+}
+
+.media ul, {
+    margin-bottom: 0;
+}
+
+#f {
+    margin: 10px;
+}
+
+#f span{
+    display: inline-block;
+}
+
+#c1 {
+    background: url("/blogger/static/img/color1.jpg") no-repeat;
+}
+
+#c2 {
+    background: url("/blogger/static/img/color2.jpg") no-repeat;
+}
+
+#c3 {
+    background: url("/blogger/static/img/color3.jpg") no-repeat;
+}
+
+#colorform button{
+    width: 200px;
+    height: 140px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+#colorform button:hover{
+    border: 1px solid #3079ed;
+}
+
+#colorform input{
+    margin: 20px;
+}
+
+#colorform div, .btns, {
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+.relay-text {
+    margin: 10px 0 10px 0;
+}
+
+.relay input, {
+    margin-bottom: 10px;
+    float: right;
+}
+
+.relay, {
+    margin: 10px 6px 0 6px;
+}
+
+.link-color {
+    font-weight: bolder;
+}
+
+.search-user>div {
+    padding: 10px 0;
+}
+
+.btn-default {
+    height: 34px;
+    width: 82px;
+}
+
+.notices {
+    padding: 20px;
+    margin: 0 -15px;
+}
+
+.pub {
+    margin-bottom: 10px;
 }

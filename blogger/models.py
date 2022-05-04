@@ -56,12 +56,13 @@ class Follow(models.Model):
 
 
 class Background(models.Model):
-    back = models.CharField(max_length=50, default='white')
+    back_color = models.CharField(max_length=50, default='#FFFFFF')
     music = models.FileField(null=True, blank=True)
     ID = models.BigAutoField(primary_key=True, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, to_field='username', verbose_name="username")
-    Font_color = models.CharField(max_length=50, default='black')
-    Border_color = models.CharField(max_length=50, default='white')
+    font_color = models.CharField(max_length=50, default='#000000')
+    box_color = models.CharField(max_length=50, default='#FFFFFF')
+    link_color = models.CharField(max_length=50, default='#3079ed')
 
 
 class Notice(models.Model):

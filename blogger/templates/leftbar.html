@@ -1,0 +1,22 @@
+            <!--左侧边栏-->
+            <div class="col-sm-3" >
+                {% if user.is_authenticated %}
+                <ul class="list-group">
+                    <li class="list-group-item bdc">
+                        <a class="link-color" href="{% url 'index' %}">首页</a>
+                    </li>
+                    <li class="list-group-item bdc">
+                        <a class="link-color" href="{% url 'notice' %}">通知</a>
+                    </li>
+                    <li class="list-group-item bdc">
+                        <a class="link-color" href="{% url 'listcollect' %}">我的收藏</a>
+                    </li>
+                    <li class="list-group-item bdc">
+                        <a class="link-color" href="{% url 'listcomment' %}">我的评论</a>
+                    </li>
+                    <li class="list-group-item bdc">
+                        <a class="link-color" href="{% url 'listlike' %}">我的点赞</a>
+                    </li>
+                </ul>
+                {% endif %}
+            </div>
