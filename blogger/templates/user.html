@@ -10,14 +10,14 @@
         <div class="fol-sub">
             <h3>{{ user.username }}</h3>
         </div>
-        <form action="/user/{{ user.username }}" method="POST" id="top-f">
+        <form action="{% url 'changeinf' %}" method="POST" id="top-f">
             {% csrf_token %}
             <p id="inf">{{ user.introduction }}</p>
             <input class="form-control" type="text" name="change_inf" id="change_inf">
             <input type="hidden" name="h" id="top-h" value="fol">
             {% if flag %}<!--真则不是自己的主页-->
             <div class="fol-sub">
-                <button class="{{ btn_class }}" type="button" id="fol" onclick="fun3()">关注</button>
+                <a href="{% url 'follow' user.username%}"><button class="{{ btn_class }}" type="button" id="fol" onclick="fun3()">关注</button></a>
             </div>
             {% else %}
             <div class="fol-sub">

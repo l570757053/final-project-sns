@@ -10,7 +10,7 @@
                     </li>
                     <li class="list-group-item">
                         <span class="badge">new</span><!--这个是新消息提示-->
-                        <a href="#">通知</a>
+                        <a href="{% url 'notice' %}">通知</a>
                     </li>
                     <li class="list-group-item">
                         <a href="{% url 'listcollect' %}">我的收藏</a>
@@ -26,7 +26,9 @@
             </div>
 {% endblock %}
 
+
 {% block pub %}
+
                 <!--发布消息-->
                 {% if user.is_authenticated %}
                 <div>
@@ -79,16 +81,16 @@
                 {% if user.is_authenticated %}
                 <ul class="list-group">
                     <li class="list-group-item">
-                        <a href="#">我的关注</a>
+                        <a href="{% url 'listfollow' %}">我的关注</a>
                     </li>
                     <li class="list-group-item">
-                        <a href="#">我的粉丝</a>
+                        <a href="{% url 'listfan' %}">我的粉丝</a>
                     </li>
                     <li class="list-group-item">
-                        <a href="#">背景设置</a>
+                        <a href="{% url 'back' %}">背景设置</a>
                     </li>
                     <li class="list-group-item">
-                        <a href="#">用户设置</a>
+                        <a href="{% url 'cu' %}">用户设置</a>
                     </li>
                 </ul>
                 {% endif %}

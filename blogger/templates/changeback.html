@@ -1,0 +1,82 @@
+{% extends "index.html" %}
+<!--用来表示中间部分的时间线-->
+{% block left %}
+            <!--左侧边栏-->
+            <div class="col-sm-3" >
+                {% if user.is_authenticated %}
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <a href="{% url 'index' %}">首页</a>
+                    </li>
+                    <li class="list-group-item">
+                        <span class="badge">new</span><!--这个是新消息提示-->
+                        <a href="{% url 'notice' %}">通知</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'listcollect' %}">我的收藏</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'listcomment' %}">我的评论</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'listlike' %}">我的点赞</a>
+                    </li>
+                </ul>
+                {% endif %}
+            </div>
+{% endblock %}
+{% block pub %}
+<form action="{% url 'color' %}" method="post" enctype="multipart/form-data" class="form-horizontal" role="form">
+    {% csrf_token %}
+    <div class="form-group"  >
+        <input type="text"  list="cours" class="form-control" placeholder="背景颜色:{{a.Font_color }}" autocomplete="off" name="color">
+        <datalist id="cours">
+            <option>black</option>
+            <option>white</option>
+            <option>aliceblue</option>
+            <option>antiquewhite</option>
+            <option>aqua</option>
+            <option>aquamarine</option>
+            <option>azure</option>
+            <option>beige</option>
+            <option>bisque</option>
+            <option>blanchedalmond</option>
+            <option>blue</option>
+            <option>blueviolet</option>
+            <option>brown</option>
+            <option>cadetblue</option>
+            <option>chartreuse</option>
+            <option>chocolate</option>
+            <option>coral</option>
+            <option>cornflowerblue</option>
+            <option>cornsilk</option>
+            <option>crimson</option>
+            <option>cyan</option>
+            <option>darkblue</option>
+            <option>pink</option>
+        </datalist>
+        <input type="submit">
+    </div>
+</form>
+{% endblock %}
+{% block right %}
+            <!--右侧边栏-->
+            <div class="col-sm-3" >
+                {% if user.is_authenticated %}
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <a href="{% url 'listfollow' %}">我的关注</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'listfan' %}">我的粉丝</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'back' %}">背景设置</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'cu' %}">用户设置</a>
+                    </li>
+                </ul>
+                {% endif %}
+            </div>
+{% endblock %}
