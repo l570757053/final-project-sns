@@ -15,7 +15,7 @@ class Message(models.Model):
     time = models.DateTimeField(auto_now_add=True)
     show = models.BooleanField(default=True)
     pic = models.ImageField(null=True, upload_to='img/', verbose_name="Image", blank=True)
-    o_ID = models.CharField(max_length=10, null=True, blank=True)
+    o_ID = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
 
 
 class Comment(models.Model):

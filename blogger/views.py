@@ -12,7 +12,7 @@ from .models import Background, Follow, Notice, User, Message, Cikes, Mlikes, Co
 def index(request):
     if request.user.is_authenticated:
         f = models.Follow.objects.filter(fans=request.user).values_list('following', flat=True)
-        msgs = models.Message.objects.select_related('user').filter(Q(user__in=f, show=True) | Q(user=request.user))
+        msgs = models.Message.objects.select_related('user', 'o_ID').filter(Q(user__in=f, show=True) | Q(user=request.user))
         return render(request, "index.html", {
             'msgs': msgs,
             "bg": get_colors(request.user)
@@ -103,10 +103,10 @@ def showuser(request, u_id):
     if request.method == "GET":
         if request.user == user:
             ctx['flag'] = False
-            msgs = models.Message.objects.filter(user=u_id)
+            msgs = models.Message.objects.filter(user=u_id).select_related('o_ID')
             ctx['msgs'] = msgs
         else:
-            msgs = models.Message.objects.filter(user=u_id, show=True)
+            msgs = models.Message.objects.filter(user=u_id, show=True).select_related('o_ID')
             ctx['msgs'] = msgs
             ctx['flag'] = True
             fol = models.Follow.objects.filter(following=user, fans=request.user)
@@ -192,11 +192,10 @@ def relay(request, m_id):
     content = request.POST["content"]
     content = content + "//@" + m.user.username + ":" + m.content
     user = request.user
-    r = Message.objects.create(user=user, content=content, o_ID=m_id)
-    n = Notice.objects.create(user=m.user)
-    n.relays = notice.relays + 1
+    Message.objects.create(user=user, content=content, o_ID=m.o_ID)
+    n = Notice.objects.get(user=m.user)
+    n.relays += 1
     n.save()
-    r.save()
     return HttpResponseRedirect(reverse("index"))
 
 
@@ -219,8 +218,7 @@ def mlike1(request, m_id):
         a = ml.first()
         a.delete()
     else:
-        c = Mlikes.objects.create(message_id=m, user=user)
-        c.save()
+        Mlikes.objects.create(message_id=m, user=user)
         n.likes += 1
     n.save()
     return HttpResponseRedirect("/bloginf/" + m_id)

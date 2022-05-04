@@ -17,10 +17,34 @@
                                 <a href="/user/{{ msg.user }}">{{ msg.user }}</a>
                             </h4>
                             <p class="msg-content">{{ msg.content }}</p>
-                            {% if msg.pic %}
-                            <img src="/img/{{ msg.pic }}" class="img-responsive">
+                            <!--原博-->
+                            {% if msg.o_ID %}
+                            <div class="media border-style">
+                                <div>
+                                    <a href="/user/{{ msg.o_ID.user }}">{{ msg.o_ID.user }}</a>
+                                    <p class="msg-content">{{ msg.o_ID.content }}</p>
+                                    {% if msg.o_ID.pic %}
+                                    <img src="/img/{{ msg.o_ID.pic }}" class="img-responsive">
+                                    {% else %}
+                                    <div style="height:40px;"></div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                                <div>
+                                    <ul class="list-group list-group-horizontal text-center list-sub">
+                                        <li><a href="{% url 'bloginf' msg.ID%}">转发</a></li>
+                                        <li><a href="{% url 'bloginf' msg.ID%}">{{ msg.cm.all.count }} 评论</a></li>
+                                        <li><a href="{% url 'mlike' msg.ID%}">{{ msg.ml.all.count }} 点赞</a></li>
+                                        <li><a href="{% url 'collect' msg.ID%}">收藏</a></li>
+                                    </ul>
+                                </div>
                             {% else %}
-                            <div style="height:40px;"></div>
+                                {% if msg.pic %}
+                                <img src="/img/{{ msg.pic }}" class="img-responsive">
+                                {% else %}
+                                <div style="height:40px;"></div>
+                                {% endif %}
                             {% endif %}
                         </div>
                         {% if user.is_authenticated %}

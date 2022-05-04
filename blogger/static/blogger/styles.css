@@ -11,7 +11,6 @@ body {
 
 .top {
     height: 350px;
-    border-radius: 5px;
     width: 100%;
     padding-top: 20px;
     margin-bottom: 20px;
@@ -35,9 +34,11 @@ body {
     margin: 0 auto;
 }
 
-#cc {
+.border-style {
     border-radius: 5px;
     border: 1px solid #ddd;
+}
+#cc {
     display: none;
     position: absolute;
     bottom: 0;
@@ -146,7 +147,7 @@ body {
     margin: 20px;
 }
 
-#colorform div, .btns, {
+#colorform div, .btns {
     text-align: center;
     padding-bottom: 10px;
 }
@@ -155,12 +156,12 @@ body {
     margin: 10px 0 10px 0;
 }
 
-.relay input, {
+.relay input {
     margin-bottom: 10px;
     float: right;
 }
 
-.relay, {
+.relay {
     margin: 10px 6px 0 6px;
 }
 
@@ -184,4 +185,9 @@ body {
 
 .pub {
     margin-bottom: 10px;
+}
+
+.list-sub li {
+    display: inline-block;
+    margin: 20px 5px 0 5px;
 }
