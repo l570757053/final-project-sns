@@ -1,0 +1,118 @@
+            <!--右侧边栏-->
+            <div class="col-sm-3">
+                {% if user.is_authenticated %}
+                <ul class="list-group">
+                    <li class="list-group-item bdc">
+                        <a class="link-color" href="{% url 'listfollow' %}">我的关注</a>
+                    </li>
+                    <li class="list-group-item bdc">
+                        <a class="link-color" href="{% url 'listfan' %}">我的粉丝</a>
+                    </li>
+                    <li class="list-group-item bdc">
+                        <a class="link-color" href="#" onclick="changeColor()">背景设置</a>
+                    </li>
+                    <li class="list-group-item bdc">
+                        <a class="link-color" href="{% url 'cu' %}">用户设置</a>
+                    </li>
+                </ul>
+                {% endif %}
+            </div>
+
+            <!--选色框-->
+            <div id="outer">
+                <div id="cc border-style">
+                    <div id="x_f">
+                        <p>更改颜色</p>
+                        <div id="x" onclick="cc_close()"></div>
+                    </div>
+                    <div>
+                        <form action="/changecolor/" method="GET" id="colorform">
+                            <input id="color" name="color" type="hidden" value="default">
+                            <div>
+                                <button type="button" id="c1" onclick="colors(1)"></button>
+                                <button type="button" id="c2" onclick="colors(2)"></button>
+                                <button type="button" id="c3" onclick="colors(3)"></button>
+                            </div>
+                            <div >
+                                <input class="btn btn-default" id="cd" type="button" value="默认配色" onclick="colors(4)">
+                                <input class="btn btn-default" type="submit" value="更改">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                function cc_close(){
+                    var ou=document.getElementById("outer");
+                    var cc=document.getElementById("cc");
+                    cc.style.display="none";
+                    ou.style.display="none";
+                }
+                function changeColor(){
+                    var ou=document.getElementById("outer");
+                    var cc=document.getElementById("cc");
+                    ou.style.display="block";
+                    cc.style.display="block";
+                }
+                function colors(c){
+                    var colors=document.getElementById("color");
+                    var f=document.getElementById("colorform");
+                    var bs=document.getElementsByClassName("bdc");
+                    var fs=document.getElementsByClassName("msg-content");
+                    var ls=document.getElementsByClassName("link-color");
+                    if(c==1){
+                        document.body.style.backgroundColor = "#b4d64e";
+                        for(var i=0;i<bs.length;i++){
+                            bs[i].style.backgroundColor="#FFFFFF";
+                        }
+                        for(var i=0;i<fs.length;i++){
+                            fs[i].style.color="#000000";
+                        }
+                        for(var i=0;i<ls.length;i++){
+                            ls[i].style.color="#da7a30";
+                        }
+                        color.value="green";
+                    }
+                    if(c==2){
+                        document.body.style.backgroundColor = "#dac6a1";
+                        bs=document.getElementsByClassName("bdc");
+                        for(var i=0;i<bs.length;i++){
+                            bs[i].style.backgroundColor="#FFFFFF";
+                        }
+                        for(var i=0;i<fs.length;i++){
+                            fs[i].style.color="#000000";
+                        }
+                        for(var i=0;i<ls.length;i++){
+                            ls[i].style.color="#217dae";
+                        }
+                        color.value="yellow";
+                    }
+                    if(c==3){
+                        document.body.style.backgroundColor = "#6d1b27";
+                        for(var i=0;i<bs.length;i++){
+                            bs[i].style.backgroundColor="#210406";
+                        }
+                        for(var i=0;i<fs.length;i++){
+                            fs[i].style.color="#af9296";
+                        }
+                        for(var i=0;i<ls.length;i++){
+                            ls[i].style.color="#b9404f";
+                        }
+                        color.value="darkred";
+                    }
+                    if(c==4){
+                        document.body.style.backgroundColor = "#FFFFFF";
+                        for(var i=0;i<bs.length;i++){
+                            bs[i].style.backgroundColor="#FFFFFF";
+                        }
+                        for(var i=0;i<fs.length;i++){
+                            fs[i].style.color="#000000";
+                        }
+                        for(var i=0;i<ls.length;i++){
+                            ls[i].style.color="#3079ed";
+                        }
+                        color.value="default";
+                    }
+                }
+            </script>

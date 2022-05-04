@@ -1,128 +1,99 @@
 {% extends "index.html" %}
 <!--用来表示中间部分的时间线-->
-{% block left %}
-            <!--左侧边栏-->
-            <div class="col-sm-3" >
-                {% if user.is_authenticated %}
-                <ul class="list-group">
-                    <li class="list-group-item">
-                        <a href="{% url 'index' %}">首页</a>
-                    </li>
-                    <li class="list-group-item">
-                        <span class="badge">new</span><!--这个是新消息提示-->
-                        <a href="{% url 'notice' %}">通知</a>
-                    </li>
-                    <li class="list-group-item">
-                        <a href="{% url 'listcollect' %}">我的收藏</a>
-                    </li>
-                    <li class="list-group-item">
-                        <a href="{% url 'listcomment' %}">我的评论</a>
-                    </li>
-                    <li class="list-group-item">
-                        <a href="{% url 'listlike' %}">我的点赞</a>
-                    </li>
-                </ul>
-                {% endif %}
-            </div>
-{% endblock %}
 {% block pub %}
 
     <div class="container"style="margin:0 auto;">
         <div class="row" >
-
             <!--中间主体-->
             <div class="col-sm-6" >
-
-                <!--这是博文格式-->
+                <!--这是对博文的点赞-->
                 {% for mlike in mlikes %}
-                <div class="media row" id="timeline">
-                    <div class="media-left col-sm-2" alt="头像">
-                         <a href="/user/{{ mlike.message_id.user }}"><img src="/img/{{ mlike.message_id.profilePhoto }}" class="img-responsive img-circle"></a>
+                <div class="media row bdc" id="mlikes">
+                    <div class="media-left col-sm-2">
+                         <a href="/user/{{ mlike.message_id.user }}"><img alt="头像" src="/img/{{ mlike.message_id.user.profilePhoto }}" class="img-responsive img-circle"></a>
                     </div>
                     <div class="media-body">
-                        <h5 class="media-heading">
+                        <h4 class="media-heading link-color">
                             <a href="/user/{{ mlike.message_id.user }}">{{ mlike.message_id.user }}</a>
-                        </h5>
+                        </h4>
                         <p class="content">{{ mlike.message_id.content }}</p>
                         <img src="/img/{{ mlike.message_id.pic }}" class="img-responsive">
                     </div>
                     <div>
-                        <ul class="nav navbar-nav" id="btns">
-                            <li><a data-toggle="collapse" data-target="#demo">转发</a></li>
-                            <li><a href="{% url 'bloginf' mlike.message_id.ID%}">{{ mlike.message_id.cm.all.count }} 评论</a></li>
-                            <li><a href="{% url 'mlike' mlike.message_id.ID%}">{{ mlike.message_id.ml.all.count }} 点赞</a></li>
-                            <li><a href="{% url 'collect' mlike.message_id.ID%}">收藏</a></li>
-                            <li></li>
+                        <ul class="list-group list-group-horizontal text-center">
+                            <li class="list-group-item"><a data-toggle="collapse" data-target="#relay{{mlike.ID}}">转发</a></li>
+                            <li class="list-group-item"><a href="{% url 'bloginf' mlike.message_id.ID%}">{{ mlike.message_id.cm.all.count }} 评论</a></li>
+                            <li class="list-group-item"><a href="{% url 'mlike' mlike.message_id.ID%}">{{ mlike.message_id.ml.all.count }} 点赞</a></li>
+                            <li class="list-group-item"><a href="{% url 'collect' mlike.message_id.ID%}">收藏</a></li>
                         </ul>
                     </div>
                     
-                    <div id="demo" class="collapse">
+                    <div id="relay{{mlike.ID}}" class="collapse relay">
                         <form action="{% url 'relay' mlike.message_id.ID%}" method="post" role="search">
                             {% csrf_token %}
-                            <textarea class="form-control" name="content" placeholder="请输入你的转发内容"></textarea>
+                            <textarea class="form-control relay-text" name="content" placeholder="请输入你的转发内容"></textarea>
                             <div>
                                 <input class="btn btn-default" type="submit" value="转发">
                             </div>
                         </form>
                     </div>
 
-                        
-                        
                 </div>
                 {% endfor %}
+
+                <!--这是对评论的点赞-->
                 {% for clike in clikes %}
-                <div class="media row" id="timeline">
-                    <div class="media-left col-sm-2" alt="头像">
-                         <a href="/user/{{ clike.comment_id.user }}"><img src="/img/{{ clike.comment_id.user.profilePhoto }}" class="img-responsive img-circle"></a>
+                <div class="media row" id="clikes">
+                    <div class="media-left col-sm-2">
+                         <a href="/user/{{ clike.comment_id.user }}"><img alt="头像" src="/img/{{ clike.comment_id.user.profilePhoto }}" class="img-responsive img-circle"></a>
                     </div>
                     <div class="media-body">
-                        <h5 class="media-heading">
+                        <h5 class="media-heading link-color">
                             <a href="/user/{{ clike.comment_id.user }}">{{ clike.comment_id.user }}</a>
                         </h5>
                         <p class="content">{{ clike.comment_id.content }}</p>
-                        <img src="/img/{{ clike.comment_id_id.pic }}" class="img-responsive">
+                        <img src="/img/{{ clike.comment_id.pic }}" class="img-responsive">
                     </div>
-                        
                 </div>
                 {% endfor %}
-                
+
+                <!--这是评论-->
                 {% for com in coms %}
-                <div class="media row" id="timeline">
-                    <div class="media-left col-sm-2" alt="头像">
-                         <a href="/user/{{ com.message_id.user }}"><img src="/img/{{ com.message_id.profilePhoto }}" class="img-responsive img-circle"></a>
+                <div class="media row bdc" id="coms">
+                    <div class="media-left col-sm-2 link-color">
+                         <a href="/user/{{ com.message_id.user }}"><img alt="头像" src="/img/{{ com.message_id.user.profilePhoto }}" class="img-responsive img-circle"></a>
                     </div>
                     <div class="media-body">
-                        <h5 class="media-heading">
+                        <h4 class="media-heading link-color">
                             <a href="/user/{{ com.message_id.user }}">{{ com.message_id.user }}</a>
-                        </h5>
+                        </h4>
                         <p class="content">{{ com.message_id.content }}</p>
                         <img src="/img/{{ com.message_id.pic }}" class="img-responsive">
                     </div>
                     <div>
-                        <ul class="nav navbar-nav" id="btns">
-                            <li><a data-toggle="collapse" data-target="#demo">转发</a></li>
-                            <li><a href="{% url 'bloginf' com.message_id.ID%}">{{ com.message_id.cm.all.count }} 评论</a></li>
-                            <li><a href="{% url 'mlike' com.message_id.ID%}">{{ com.message_id.ml.all.count }} 点赞</a></li>
-                            <li><a href="{% url 'collect' com.message_id.ID%}">收藏</a></li>
-                            <li></li>
+                        <ul class="list-group list-group-horizontal text-center">
+                            <li class="list-group-item"><a data-toggle="collapse" data-target="#relay{{com.ID}}">转发</a></li>
+                            <li class="list-group-item"><a href="{% url 'bloginf' com.message_id.ID%}">{{ com.message_id.cm.all.count }} 评论</a></li>
+                            <li class="list-group-item"><a href="{% url 'mlike' com.message_id.ID%}">{{ com.message_id.ml.all.count }} 点赞</a></li>
+                            <li class="list-group-item"><a href="{% url 'collect' com.message_id.ID%}">收藏</a></li>
                         </ul>
-                    </div>                  
-                    <div id="demo" class="collapse">
+                    </div>
+                    <div id="relay{{com.ID}}" class="collapse relay">
                         <form action="{% url 'relay' com.message_id.ID%}" method="post" role="search">
                             {% csrf_token %}
-                            <textarea class="form-control" name="content" placeholder="请输入你的转发内容"></textarea>
+                            <textarea class="form-control relay-text" name="content" placeholder="请输入你的转发内容"></textarea>
                             <div>
                                 <input class="btn btn-default" type="submit" value="转发">
                             </div>
                         </form>
                     </div>
-                    <table class="table table-bordered"width="100%" rules=none>
+                    <table class="table table-bordered relay" width="100%" rules=none>
                         <thead>
                             <th>   
-                                <div class="media-left col-sm-2" alt="头像">
-                                    <a href="/user/{{ com.user }}"><img src="/img/{{ com.user.profilePhoto }}" class="img-responsive img-circle"></a>
+                                <div class="media-left col-sm-2">
+                                    <a href="/user/{{ com.user }}"><img alt="头像" src="/img/{{ com.user.profilePhoto }}" class="img-responsive img-circle"></a>
                                 </div> 
-                                <h5 class="media-heading">
+                                <h5 class="media-heading link-color">
                                     <a href="/user/{{ com.user }}">{{ com.user }}</a>
                                 </h5>
                             </th>
@@ -134,34 +105,9 @@
                             </tr>
                         </tbody>
                     </table>
-
-                        
-                        
                 </div>
-
                 {% endfor %}
             </div>
         </div>
     </div>
-{% endblock %}
-{% block right %}
-            <!--右侧边栏-->
-            <div class="col-sm-3" >
-                {% if user.is_authenticated %}
-                <ul class="list-group">
-                    <li class="list-group-item">
-                        <a href="{% url 'listfollow' %}">我的关注</a>
-                    </li>
-                    <li class="list-group-item">
-                        <a href="{% url 'listfan' %}">我的粉丝</a>
-                    </li>
-                    <li class="list-group-item">
-                        <a href="{% url 'back' %}">背景设置</a>
-                    </li>
-                    <li class="list-group-item">
-                        <a href="{% url 'cu' %}">用户设置</a>
-                    </li>
-                </ul>
-                {% endif %}
-            </div>
 {% endblock %}

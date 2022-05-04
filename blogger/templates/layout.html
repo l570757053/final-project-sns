@@ -8,6 +8,12 @@
         <link href="{% static 'blogger/styles.css' %}" rel="stylesheet">
         <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
         <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <style type="text/css">
+        body p {color: {{ bg.font_color }};}/* 字体颜色 */
+        body a {color: {{ bg.link_color }};}/* 链接颜色 */
+        body {background-color: {{ bg.back_color }};}/* 背景颜色 */
+        .bdc {background-color: {{ bg.box_color }};}/* 框颜色 */
+        </style>
     </head>
     <body>
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -41,7 +47,19 @@
 
             </div>
         </nav>
-        {% block body %}
-        {% endblock %}
+
+        <div class="container">
+            {% block top %}
+            {% endblock %}
+            <div class="row" >
+                {% block leftbar %}
+                {% endblock %}
+                {% block center %}
+                {% endblock %}
+                {% block rightbar %}
+                {% endblock %}
+            </div>
+        </div>
+
     </body>
 </html>
